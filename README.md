@@ -11,15 +11,17 @@
     - 모바일 분야의 게임 수집을 위해 수집 
 
 ## 담당파트
-- 자료 수집 
+- [자료 수집](https://github.com/hoseong0422/MC_PJ_03/blob/master/codes/steam_info_crawler.py)
     - 스팀 게임 정보 수집 크롤러 제작
-- 자료 저장 
+- [Data Pipeline 고도화](https://github.com/hoseong0422/MC_PJ_03/tree/master/codes/kafka)
+    - 파이프라인 고도화를 위해서 수집 단계에 Apach Kafka를 적용
+- 자료 저장
     - MongoDB에 크롤링한 데이터를 적재하여 DataLake 구축
-- 전처리
+- [전처리](https://github.com/hoseong0422/MC_PJ_03/blob/master/codes/steam_info_to_warehouse.py)
     - MongoDB에 적재된 데이터를 불러와 특수기호, 이모티콘, 영문이 아닌 글자들을 제거 후 DataWarehouse인 MySQL에 적재
     - Spark SQL과 JDBC 드라이버를 이용하여 DB에 접속 후 데이터를 조회하여 Steam에서 수집된 게임에만 부여된 appid를 Metacritic 게임타이틀에 동일하게 부여
         - 두 사이트의 관계를 부여하기 위해 게임타이틀의 띄어쓰기를 없애고 특수문자 및 기호를 없앤 후 전부 소문자로 변환하여 비교
-- 서비스
+- [서비스](https://github.com/hoseong0422/MC_PJ_03/tree/master/codes/Flask)
     - Flask 백엔드 API
         - 자신이 좋아하는 혹은 좋아할 것 같은 게임을 미리 선택하기 위해 장르별 상위 15개 게임을 미리 DB에 VIEW 테이블로 만들어 놓은 후 POST 방식으로 요청하고 JSON 형식으로 응답하도록 구현
         - 사용자가 자신이 좋아하는 게임 3개를 선택하여 제출을 하면 POST 방식으로 appid 3개를 요청 받고 appid로 나온 게임 추천 결과를 DB에 조회하여 appid와 게임타이틀을 JSON으로 응답하도록 구현
