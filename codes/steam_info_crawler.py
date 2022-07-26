@@ -8,12 +8,26 @@ from fake_useragent import UserAgent
 ua = UserAgent()
 header = {'User-Agent': str(ua.random)}
 
-USER = "user"
-PWD = "pwd"
-HOST = "host"
-PORT = "port"
-client = pymongo.MongoClient(f"mongodb://{USER}:{PWD}@{HOST}:{PORT}")
-db = client['steam']
+
+def __get_mongodb_collection(collection_name):
+    """_summary_
+
+    Args:
+        collection_name (string): 컬랙션 이름을 입력하여 컬랙션을 선택한다.
+
+    Returns:
+        _type_: _description_
+    """
+    USER = "user"
+    PWD = "pwd"
+    HOST = "host"
+    PORT = "port"
+    client = pymongo.MongoClient(f"mongodb://{USER}:{PWD}@{HOST}:{PORT}")
+    db = client['steam']
+    collection = db[collection_name]
+
+    return collection
+
 
 # api를 이용해 미리 받아둔 appid
 df = pd.read_csv("appid.csv", encoding="utf-8")
@@ -213,7 +227,9 @@ def get_steam_game_info():
             "all_reviews_ratio":int(all_reviews_ratio), "all_reviews_voted_users":int(all_reviews_voted_users),
             "image_link":image_link, "grade":grade, "info":info_list, "tag":tag_list, "about_this_game":about_this_game,
             "language_interface":interface_list, "language_fullaudio":fullaudio_list, "language_subtitles":subtitles_list}
-        db.steam_info.insert_one(DOC)
+        
+        collection = __get_mongodb_collection("steam_info")
+        collection.insert_one(DOC)
         
         del id, title, genre, developer, publisher, franchise, release_date, recent_reviews,\
             info_list, tag_list, interface_list, fullaudio_list, subtitles_list, recent_reviews_ratio,\
