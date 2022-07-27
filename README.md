@@ -13,7 +13,7 @@
 ## 담당파트
 - [자료 수집](https://github.com/hoseong0422/MC_PJ_03/blob/master/codes/steam_info_crawler.py)
     - 스팀 게임 정보 수집 크롤러 제작
-- [Data Pipeline 고도화](https://github.com/hoseong0422/MC_PJ_03/tree/master/codes/kafka)
+- [Data Pipeline에 Kafka 적용](https://github.com/hoseong0422/MC_PJ_03/tree/master/codes/kafka)
     - 파이프라인 고도화를 위해서 수집 단계에 Apach Kafka를 적용
 - 자료 저장
     - MongoDB에 크롤링한 데이터를 적재하여 DataLake 구축

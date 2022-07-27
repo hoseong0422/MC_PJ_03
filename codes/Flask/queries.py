@@ -97,7 +97,6 @@ def get_casual_top15():
     }
     return casual
 
-
 # Indie top 15
 def get_indie_top15():
     sql = """
@@ -125,34 +124,6 @@ def get_indie_top15():
         "game15" : indie_cur[14]
     }
     return indie
-
-# Racing top 15
-def get_racing_top15():
-    sql = """
-    SELECT appid, title, image_link
-    FROM racing_top15;
-    """
-    cursor.execute(sql)
-    racing_cur = cursor.fetchall()
-
-    racing = {
-        "game1" : racing_cur[0],
-        "game2" : racing_cur[1],
-        "game3" : racing_cur[2],
-        "game4" : racing_cur[3],
-        "game5" : racing_cur[4],
-        "game6" : racing_cur[5],
-        "game7" : racing_cur[6],
-        "game8" : racing_cur[7],
-        "game9" : racing_cur[8],
-        "game10" : racing_cur[9],
-        "game11" : racing_cur[10],
-        "game12" : racing_cur[11],
-        "game13" : racing_cur[12],
-        "game14" : racing_cur[13],
-        "game15" : racing_cur[14]
-    }
-    return racing
 
 # Racing top 15
 def get_racing_top15():

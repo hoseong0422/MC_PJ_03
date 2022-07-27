@@ -36,8 +36,11 @@ meta_user_df = spark.read\
     .option("password", f"{DB_PASSWD}").load()
 
 """
-
+모델링 팀에서 요청한 양식인 meta_info 테이블의 appid와 title, meta_user 테이블의 username, userscore가 합쳐진 테이블을 요청하여
+meta_info, meta_user 테이블의 타이블을 이용하여 INNER JOIN을 실시하였고
+appid가 NULL이 아닌 데이터들만 조회하였습니다.
 """
+
 query = """
 SELECT meta_info.appid, meta_user.title, meta_user.username, meta_user.userscore
 FROM meta_info
