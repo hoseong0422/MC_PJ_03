@@ -13,43 +13,11 @@ def home():
     return "Hello Flask!!"
 
 """
-POST 방식으로 요청 받은 appid을 모델에 넣어
-추천받은 게임 6개를 numpy.int64 형식으로 응답
-<numpy.int64>.item() -> numpy.int64를 int형식으로 변경해 줌
-"""
-@app.route('/recommendation/', methods=['POST'])
-def recommend_by_app_id():
-    
-    data = request.json
-    appid1 = int(data["appid1"])
-    appid2 = int(data["appid2"])
-    appid3 = int(data["appid3"])
-    
-    # appids : 넘파이 리스트로 추천된 앱아이디 6개
-    appids = gentleman_ver1(appid1, appid2, appid3)
-
-    rec_appid1 = appids[0].item()
-    rec_appid2 = appids[1].item()
-    rec_appid3 = appids[2].item()
-    rec_appid4 = appids[3].item()
-    rec_appid5 = appids[4].item()
-    rec_appid6 = appids[5].item()
-
-    appid_return = {"recomented_games" : 
-                        [{"title1" : get_title(rec_appid1)['title'].replace("  ", " "), "appid1" : str(rec_appid1)}, 
-                        {"title2" : get_title(rec_appid2)['title'].replace("  "," "), "appid2" : str(rec_appid2)},
-                        {"title3" : get_title(rec_appid3)['title'].replace("  "," "), "appid3" : str(rec_appid3)},
-                        {"title4" : get_title(rec_appid4)['title'].replace("  "," "), "appid4" : str(rec_appid4)},
-                        {"title5" : get_title(rec_appid5)['title'].replace("  "," "), "appid5" : str(rec_appid5)},
-                        {"title6" : get_title(rec_appid6)['title'].replace("  "," "), "appid6" : str(rec_appid6)}]}
-    return jsonify(appid_return)
-
-"""
 게임 선택 화면
 action, adventure, casual, indie, racing, rpg, simulation, sports, strategy
 각 장르별 탑 15개를 미리 VIEW로 만들어 놓은 뒤 조회하는 방식으로 구현
 """
-@app.route('/select/', methods=['POST'])
+@app.route('/select/', methods=['GET'])
 def select():
     action_return = get_action_top15()
     adventure_return = get_adventure_top15()
@@ -73,5 +41,49 @@ def select():
                 {"strategy_top15" : strategy_return}]}
     return jsonify(select_return)
 
+"""
+POST 방식으로 요청 받은 appid을 모델에 넣어
+추천받은 게임 6개를 numpy.int64 형식으로 응답
+<numpy.int64>.item() -> numpy.int64를 int형식으로 변경해 줌
+"""
+@app.route('/recommendation/', methods=['POST'])
+def recommend_by_app_id():
+    """
+    methods: POST
+    return: JSON
+    """
+    data = request.get_json()["game_list"]
+    appid1 = data[0]
+    appid2 = data[1]
+    appid3 = data[2]
+    
+    # appids : 넘파이 리스트로 추천된 앱아이디 6개
+    rec_games = gentleman_ver1(appid1, appid2, appid3)
+    
+
+    game_info_list = get_game_info(rec_games)
+
+    game_json = [{ "title" : game_info["title"].replace("  ", " "), "appid" : game_info["appid"], "image_link" : game_info["image_link"]} for game_info in game_info_list ]
+    appid_return = {"recomented_games" : game_json }
+    print(appid_return)
+    return jsonify(appid_return)
+
+@app.route('/api/recommendation2/', methods=['POST'])
+def recommend_by_app_id2():
+    data = request.get_json()["game_list"]
+    appid1 = data[0]
+    appid2 = data[1]
+    appid3 = data[2]
+
+    rec_games2 = gentleman_ver2(appid1, appid2, appid3)
+    
+    game_info_list2 = get_game_info(rec_games2)
+  
+
+    game_json2 = [{ "title" : game_info["title"].replace("  ", " "), "appid" : game_info["appid"], "image_link" : game_info["image_link"]} for game_info in game_info_list2 ]
+    appid_return2 = {"recomented_games2" : game_json2}
+    
+    return jsonify(appid_return2)
+
 if __name__ == '__main__':
-    app.run(debug=True, port=3000)
+    app.run(debug=True, port=5000)

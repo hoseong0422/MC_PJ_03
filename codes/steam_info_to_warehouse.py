@@ -56,9 +56,11 @@ final_df['language_subtitles'] = final_df['language_subtitles'].apply(lambda x: 
 
 steam_df = final_df.dropna(axis=0)
 
+# 게임 설명 부분 영문, 숫자만 남기기
 pattern = '[^a-z^A-Z^0-9]'
 steam_df['about_this_game'] = steam_df['about_this_game'].apply(lambda x : re.sub(pattern, ' ', str(x)))
 
+# 개발사, 배급사, 프랜차이즈, 게임 이름에 영문, 숫자, 일부 기호만 남기기
 pattern2 = '[^a-z^A-Z^0-9^.^,]'
 steam_df['developer'] = steam_df['developer'].apply(lambda x : re.sub(pattern2, ' ', str(x)))
 steam_df['publisher'] = steam_df['publisher'].apply(lambda x : re.sub(pattern2, ' ', str(x)))
@@ -70,8 +72,6 @@ DB_USER = 'user'
 DB_PASSWD = 'pwd'
 DB_NAME = 'db'
 
+# pymysql을 이용하여 Pandas DataFrame을 MySQl에 바로 적재하였습니다.
 conn = f"mysql+pymysql://{DB_USER}:{DB_PASSWD}@{HOST}/{DB_NAME}?charset=utf8"
-
-engine = create_engine('mysql+pymysql://{DB_USER}:{DB_PASSWD}@{HOST}/{DB_NAME}?charset=utf8')
-
 steam_df.to_sql(name='steam_game_info', con=conn, if_exists="append")
