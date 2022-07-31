@@ -29,7 +29,7 @@ def __get_mongodb_collection(collection_name):
 
 # api를 이용해 미리 받아둔 appid
 df = pd.read_csv("appid.csv", encoding="utf-8")
-appids = df["0"].values
+appids = df["0"].to_list()
 
 def get_steam_game_info():
     """

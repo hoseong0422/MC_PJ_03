@@ -1,6 +1,6 @@
 from gensim.models.doc2vec import Doc2Vec
 import pandas as pd
-import numpy as np
+
 def gentleman_ver1(game1, game2, game3):
     """
     Args:
@@ -11,7 +11,10 @@ def gentleman_ver1(game1, game2, game3):
     Returns:
         list: 모델의 추천 결과 게임 6개
     """
+    # with open('models/appiddoc2vec.model', 'rb') as f:
+    #     model = pickle.load(f)
     model = Doc2Vec.load('models/appiddoc2vec.model')
+
     d1 = pd.DataFrame(model.docvecs.most_similar([game1], topn=10), columns=['game', 'similarity1']) # game1 추천목록 & 유사도
     d2 = pd.DataFrame(model.docvecs.most_similar([game2], topn=10), columns=['game', 'similarity2']) # game2 추천목록 & 유사도
     d3 = pd.DataFrame(model.docvecs.most_similar([game3], topn=10), columns=['game', 'similarity3']) # game3 추천목록 & 유사도

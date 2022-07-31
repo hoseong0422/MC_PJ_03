@@ -1,20 +1,21 @@
 import pymysql
 
 gentleman = pymysql.connect(
-    host="HOST",
-    user="USER",
-    passwd='PWD',
-    db='DBNAME', 
+    host="ec2-**-***-**-***.ap-northeast-1.compute.amazonaws.com",
+    user="****",
+    passwd='****',
+    db='gentleman', 
     port=3306
-)
+    )
 cursor = gentleman.cursor(pymysql.cursors.DictCursor)
 
-"""
-선택화면에서 표시될 각 장르별 상위 15개의 게임을 미리 VIEW 테이블로 만들어 놓고
-그 테이블을 조회한 결과를 리턴하는 함수들을 모아두었습니다.
-"""
+
 # Action top 15
 def get_action_top15():
+    """
+    선택화면에서 표시될 각 장르별 상위 15개의 게임을 미리 VIEW 테이블로 만들어 놓고
+    그 테이블을 조회한 결과를 리턴하는 함수
+    """
     sql = """
     SELECT appid, title, image_link
     FROM action_top15;
@@ -123,6 +124,25 @@ def get_strategy_top15():
     return strategy
 
 
+def get_title(appid):
+    """
+        appid를 입력받아 title 리턴하는 함수
+        
+        모델이 출력 결과를 appid로 출력하기 때문에 appid를 이용하여 db에 조회를 하여 title을 불러옴
+    """
+    sql = f"""
+    SELECT title, image_link, genre, release_date, video_link, descriptions,
+    CASE WHEN grade = 0 THEN "등급 없음"
+         WHEN grade = 1 THEN "전체 이용 가능"
+         ELSE grade
+         END AS grade
+    FROM steam_game_info2 
+    WHERE appid = {appid};"""
+    cursor.execute(sql)
+    action_cur = cursor.fetchall()
+    title = action_cur[0]
+    return title
+
 def get_game_info(appids):
     """
 
@@ -138,7 +158,7 @@ def get_game_info(appids):
             in_str += str(appid) + ","
         else:
             in_str += str(appid)
-    sql = f"SELECT title, appid, image_link FROM steam_game_info WHERE appid in ({in_str});"
+    sql = f"SELECT title, appid, image_link FROM steam_game_info2 WHERE appid in ({in_str});"
     cursor.execute(sql)
     action_cur = cursor.fetchall()
     game_info_list = list(action_cur)
