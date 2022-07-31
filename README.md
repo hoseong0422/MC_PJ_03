@@ -26,4 +26,4 @@
         - 자신이 좋아하는 혹은 좋아할 것 같은 게임을 미리 선택하기 위해 장르별 상위 15개 게임을 미리 DB에 VIEW 테이블로 만들어 놓은 후 POST 방식으로 요청하고 JSON 형식으로 응답하도록 구현
         - 사용자가 자신이 좋아하는 게임 3개를 선택하여 제출을 하면 POST 방식으로 appid 3개를 요청 받고 appid로 나온 게임 추천 결과를 DB에 조회하여 appid와 게임타이틀을 JSON으로 응답하도록 구현
 
-프로젝트 상세 정리 [노션](https://data-explorer.notion.site/Gentleman-25facd8c20ea414481d472068c7488dd) 페이지
+프로젝트 상세 정리 [노션](https://field-nerve-7fd.notion.site/Gentleman-a48e8396b8f047e18a54081af889546f) 페이지
